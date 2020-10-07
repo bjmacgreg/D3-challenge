@@ -62,47 +62,48 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
   return circlesGroup;
 }
 
-// function used for updating circles group with new tooltip
-// function updateToolTip(chosenXAxis, circlesGroup) {
+//function used for updating circles group with new tooltip
+function updateToolTip(chosenXAxis, circlesGroup) {
 
-//   var label;
+  var label;
 
-//   if (chosenXAxis === "age") {
-//     label = "Age:";
-//   }
-//   else {
-//     label = "Income:";
-//   }
+  if (chosenXAxis === "age") {
+    label = "Age:";
+  }
+  else {
+    label = "Income:";
+  }
 
-//   var toolTip = d3.tip()
-//     .attr("class", "tooltip")
-//     .offset([80, -60])
-//     .html(function(d) {
-//       return (`${d.state}<br>${label} ${d[chosenXAxis]}`);
-//     });
+  var toolTip = d3.tip()
+    .attr("class", "tooltip")
+    .offset([80, -60])
+    .html(function(d) {
+      return (`${d.state}<br>${label} ${d[chosenXAxis]}`);
+    });
 
-//   circlesGroup.call(toolTip);
+  circlesGroup.call(toolTip);
 
-//   circlesGroup.on("mouseover", function(data) {
-//     toolTip.show(data);
-//   })
-//     // onmouseout event
-//     .on("mouseout", function(data, index) {
-//       toolTip.hide(data);
-//     });
+  circlesGroup.on("mouseover", function(data) {
+    toolTip.show(data);
+  })
+    // onmouseout event
+    .on("mouseout", function(data, index) {
+      toolTip.hide(data);
+    });
 
-//   return circlesGroup;
-// }
+  return circlesGroup;
+}
 
 // Retrieve data from the CSV file and execute everything below
 d3.csv("../assets/data/data.csv").then(function(data, err) {
   if (err) throw err;
 
   // parse data
-  data.forEach(function(age) {
+  data.forEach(function(data) {
     data.age = +data.age;
     data.smokes = +data.smokes;
-    data.num_albums = +data.income;
+    data.income = +data.income;
+    data.obesity = +data.obesity;    
   });
 
   // xLinearScale function above csv import
@@ -110,7 +111,7 @@ d3.csv("../assets/data/data.csv").then(function(data, err) {
 
   // Create y scale function
   var yLinearScale = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.smoking)])
+    .domain([0, d3.max(data, data => data.smokes)])
     .range([height, 0]);
 
   // Create initial axis functions
@@ -133,7 +134,7 @@ d3.csv("../assets/data/data.csv").then(function(data, err) {
     .enter()
     .append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
-    .attr("cy", d => yLinearScale(d.num_hits))
+    .attr("cy", d => yLinearScale(d.smokes))
     .attr("r", 20)
     .attr("fill", "pink")
     .attr("opacity", ".5");
@@ -166,7 +167,7 @@ d3.csv("../assets/data/data.csv").then(function(data, err) {
     .text("Percent smokers");
 
   // updateToolTip function above csv import
-//   var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+  var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
   // x axis labels event listener
   labelsGroup.selectAll("text")
