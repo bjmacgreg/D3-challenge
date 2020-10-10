@@ -1,2 +1,6 @@
 # D3-challenge
-Homework 13
+The code produces a responsive scatter plot with three choices of variables on each axis, and a mouseover function that reveals the identity of each point and its x and y coordinates. Variables can be selected by clicking on the appropriate axis text.
+
+The app.js file does most of the work (based heavily on an in-class example). A target svg box is set up and margins defined to hold the table, and an initial parameter pair set. Next are a series of functions to deal with the X and Y axes and variables as the user clicks on axis choices: functions to update scales to reasonable ranges for each selected variable; functions setting the timing of the transition between axes; functions setting the new X and Y coordinates of the circle centers; and a function to send the relevant titles and values to the tooltips. In the final section, an error handler is set up, the .csv data read in and converted to numeric, and the plot assembled. The initial plot shows the starter parameter pair (here Age/Smoking). When an axis label is clicked, an event listener updates the axis scale, assigns a center coordinate to each circle, sends the new information to the tooltips, and turns the label text bold.
+
+The index.html file calls the needed software and files (supplied) and sets up a simple page with a title, space for the graph, some text, and a footer (no it's not 2016, but I don't know anything about the copyright). Two CSS files were supplied and used without significant changes. The datafile (supplied) is US census data. 
